@@ -73,6 +73,13 @@ class PlaySoundViewController: UIViewController {
         
     }
     
+    @IBAction func playEchoEffect(sender: UIButton) {
+        playAudioWithEcho()
+    }
+    @IBAction func playReverbEffect(sender: UIButton) {
+        playAudioWithReverb()
+    }
+    
     func playAudioWithVariablePitch(pitch:Float){
         audioPlayer.stop()
         audioEngine.stop()
@@ -87,6 +94,52 @@ class PlaySoundViewController: UIViewController {
         
         audioEngine.connect(audioPlayerNode, to: changePitchEffect, format: nil)
         audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        
+        try! audioEngine.start()
+        
+        audioPlayerNode.play()
+    }
+    
+    func playAudioWithReverb(){
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        let audioPlayerNode = AVAudioPlayerNode()
+        let reverbEffect = AVAudioUnitReverb()
+        let delayEffect = AVAudioUnitDelay()
+        
+        audioEngine.attachNode(audioPlayerNode)
+        audioEngine.attachNode(reverbEffect)
+        audioEngine.attachNode(delayEffect)
+        
+        audioEngine.connect(audioPlayerNode, to: delayEffect, format: nil)
+        audioEngine.connect(delayEffect, to: reverbEffect, format: nil)
+        audioEngine.connect(reverbEffect, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        
+        try! audioEngine.start()
+        
+        audioPlayerNode.play()
+    }
+    
+    func playAudioWithEcho(){
+        audioPlayer.stop()
+        audioEngine.stop()
+        audioEngine.reset()
+        
+        let audioPlayerNode = AVAudioPlayerNode()
+        let delayEffect = AVAudioUnitDelay()
+        delayEffect.delayTime = NSTimeInterval( 0.2 )
+        
+        audioEngine.attachNode(audioPlayerNode)
+        audioEngine.attachNode(delayEffect)
+        
+        audioEngine.connect(audioPlayerNode, to: delayEffect, format: nil)
+        audioEngine.connect(delayEffect, to: audioEngine.outputNode, format: nil)
         
         audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
         
