@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rmi-8j-69F">
-                                <rect key="frame" x="162" y="468" width="50" height="103.5"/>
+                                <rect key="frame" x="162" y="472" width="50" height="50"/>
                                 <animations/>
                                 <state key="normal" image="stopbutton"/>
                                 <connections>
@@ -34,7 +34,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap to Record" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MjQ-o3-PbE">
-                                <rect key="frame" x="107.5" y="415" width="160" height="21"/>
+                                <rect key="frame" x="107.5" y="413" width="160" height="21"/>
                                 <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="PCP-vl-dXP"/>
@@ -44,15 +44,29 @@
                                 <color key="textColor" red="0.1450980392" green="0.28235294119999998" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RFz-qU-8h5">
+                                <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UGQ-G4-ifm">
+                                <rect key="frame" x="147" y="156" width="80" height="80"/>
+                                <animations/>
+                                <state key="normal" image="pause"/>
+                                <connections>
+                                    <action selector="pauseResumeRecord:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CcH-r8-RWG"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="MjQ-o3-PbE" firstAttribute="top" secondItem="CNV-at-wvL" secondAttribute="bottom" constant="32" id="0lP-1l-Dlt"/>
+                            <constraint firstItem="MjQ-o3-PbE" firstAttribute="top" secondItem="CNV-at-wvL" secondAttribute="bottom" constant="30" id="0lP-1l-Dlt"/>
+                            <constraint firstItem="UGQ-G4-ifm" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="92" id="2R3-jn-DSU"/>
+                            <constraint firstItem="UGQ-G4-ifm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Ajv-4d-cy5"/>
                             <constraint firstItem="MjQ-o3-PbE" firstAttribute="centerX" secondItem="CNV-at-wvL" secondAttribute="centerX" id="CTA-WZ-Z5d"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="rmi-8j-69F" secondAttribute="bottom" constant="95" id="Z2x-9j-Vcw"/>
-                            <constraint firstItem="MjQ-o3-PbE" firstAttribute="centerX" secondItem="rmi-8j-69F" secondAttribute="centerX" id="aXb-dQ-f1U"/>
-                            <constraint firstItem="rmi-8j-69F" firstAttribute="top" secondItem="MjQ-o3-PbE" secondAttribute="bottom" constant="32" id="koB-Ox-U5t"/>
+                            <constraint firstItem="rmi-8j-69F" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="DrU-uc-cz1"/>
+                            <constraint firstItem="rmi-8j-69F" firstAttribute="top" secondItem="MjQ-o3-PbE" secondAttribute="bottom" constant="38" id="mid-oZ-d4h"/>
                             <constraint firstItem="CNV-at-wvL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="n40-jB-jSD"/>
                             <constraint firstItem="MjQ-o3-PbE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="tHn-tg-pEe"/>
                         </constraints>
@@ -60,6 +74,7 @@
                     <navigationItem key="navigationItem" title="Record" id="JHn-1u-5F0"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="pauseResumeButton" destination="UGQ-G4-ifm" id="XAc-1m-jQ3"/>
                         <outlet property="recordButton" destination="CNV-at-wvL" id="cN6-v3-9eV"/>
                         <outlet property="recordInProgress" destination="MjQ-o3-PbE" id="y4M-Se-q9h"/>
                         <outlet property="stopButton" destination="rmi-8j-69F" id="fvt-gq-aMY"/>
@@ -82,14 +97,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfs-QS-kAj">
-                                <rect key="frame" x="46" y="114" width="100" height="100"/>
-                                <animations/>
-                                <state key="normal" image="slowbutton"/>
-                                <connections>
-                                    <action selector="playSlow:" destination="LRY-K1-u5S" eventType="touchUpInside" id="Ynf-2A-vZN"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cd4-OT-5Ty">
                                 <rect key="frame" x="229" y="114" width="100" height="100"/>
                                 <animations/>
@@ -119,18 +126,32 @@
                                 <animations/>
                                 <state key="normal" image="darthvader"/>
                                 <connections>
-                                    <action selector="playDarthVaderAudio:" destination="LRY-K1-u5S" eventType="touchUpInside" id="3pW-K6-jGz"/>
+                                    <action selector="playDarthVaderAudio:" destination="LRY-K1-u5S" eventType="touchUpInside" id="1Ph-OK-sHc"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wba-zB-EfF">
                                 <rect key="frame" x="52" y="421" width="80" height="80"/>
                                 <animations/>
                                 <state key="normal" image="parrot"/>
+                                <connections>
+                                    <action selector="playEchoEffect:" destination="LRY-K1-u5S" eventType="touchUpInside" id="rDP-qu-1Cz"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TDl-Nc-BQF">
                                 <rect key="frame" x="243" y="421" width="80" height="80"/>
                                 <animations/>
                                 <state key="normal" image="revertb"/>
+                                <connections>
+                                    <action selector="playReverbEffect:" destination="LRY-K1-u5S" eventType="touchUpInside" id="rc3-G4-8Fx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfs-QS-kAj">
+                                <rect key="frame" x="46" y="114" width="100" height="100"/>
+                                <animations/>
+                                <state key="normal" image="slowbutton"/>
+                                <connections>
+                                    <action selector="playSlow:" destination="LRY-K1-u5S" eventType="touchUpInside" id="Ynf-2A-vZN"/>
+                                </connections>
                             </button>
                         </subviews>
                         <animations/>
@@ -189,6 +210,7 @@
         <image name="fastbutton" width="100" height="100"/>
         <image name="microphone" width="100" height="100"/>
         <image name="parrot" width="80" height="80"/>
+        <image name="pause" width="80" height="80"/>
         <image name="revertb" width="80" height="80"/>
         <image name="slowbutton" width="100" height="100"/>
         <image name="stopbutton" width="50" height="50"/>

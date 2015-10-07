@@ -14,9 +14,12 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
 
     @IBOutlet weak var recordInProgress: UILabel!
     @IBOutlet weak var stopButton: UIButton!
+    @IBOutlet weak var pauseResumeButton: UIButton!
     
     var audioRecorder : AVAudioRecorder!
     var recordedAudio : RecordedAudio!
+    var isInRecord : Bool!
+    
     
     @IBOutlet weak var recordButton: UIButton!
     
@@ -38,6 +41,7 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         recordInProgress.text="record in progress..."
         recordButton.enabled=false
         stopButton.hidden=false
+        pauseResumeButton.hidden = false
         
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
         
@@ -54,9 +58,9 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.delegate=self
         audioRecorder.prepareToRecord()
         audioRecorder.record()
-
         
     }
+    
     
     func audioRecorderDidFinishRecording(recorder: AVAudioRecorder, successfully flag: Bool) {
         if (flag){
@@ -87,11 +91,28 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
     }
     
+    @IBAction func pauseResumeRecord(sender: UIButton) {
+        // Check if the recorder is currently recording
+        if (audioRecorder.recording) {
+            audioRecorder.pause()
+            recordInProgress.text="record in pause"
+            // Change the image of the button to resume
+            pauseResumeButton.setImage(UIImage(named: "resume"), forState: UIControlState.Normal)
+        } else {
+            audioRecorder.record()
+            recordInProgress.text="record in progress..."
+            // Set back the pause image for the button
+            pauseResumeButton.setImage(UIImage(named: "pause"), forState: UIControlState.Normal)
+        }
+    }
+    
     func setInitialState()
     {
-        recordInProgress.text="Tap for Record"
-        recordButton.enabled=true
-        stopButton.hidden=true
+        recordInProgress.text = "Tap for Record"
+        recordButton.enabled = true
+        pauseResumeButton.hidden = true
+        stopButton.hidden = true
+        isInRecord = false
     }
 
 }

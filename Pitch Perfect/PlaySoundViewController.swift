@@ -62,104 +62,67 @@ class PlaySoundViewController: UIViewController {
         
     }
     @IBAction func playFast(sender: UIButton) {
-        playSound(1.5)
+        playAudio(1.5, pitch:0.0, echo: 0.0, reverb: 0.0)
     }
     
     @IBAction func playSlow(sender: UIButton) {
-        playSound(0.5)
+        playAudio(0.5, pitch:0.0, echo: 0.0, reverb: 0.0)
     }
+    
     @IBAction func playChipmunkAudio(sender: UIButton) {
-        playAudioWithVariablePitch(1000)
+        playAudio(1.0, pitch:1000, echo: 0.0, reverb: 0.0)
         
     }
     
     @IBAction func playEchoEffect(sender: UIButton) {
-        playAudioWithEcho()
+        playAudio(1.0, pitch:0.0, echo: 0.2,reverb: 0.0)
     }
+    
     @IBAction func playReverbEffect(sender: UIButton) {
-        playAudioWithReverb()
-    }
-    
-    func playAudioWithVariablePitch(pitch:Float){
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
-        
-        let audioPlayerNode = AVAudioPlayerNode()
-        let changePitchEffect = AVAudioUnitTimePitch()
-        changePitchEffect.pitch=pitch
-        
-        audioEngine.attachNode(audioPlayerNode)
-        audioEngine.attachNode(changePitchEffect)
-        
-        audioEngine.connect(audioPlayerNode, to: changePitchEffect, format: nil)
-        audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format: nil)
-        
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
-        
-        try! audioEngine.start()
-        
-        audioPlayerNode.play()
-    }
-    
-    func playAudioWithReverb(){
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
-        
-        let audioPlayerNode = AVAudioPlayerNode()
-        let reverbEffect = AVAudioUnitReverb()
-        let delayEffect = AVAudioUnitDelay()
-        
-        audioEngine.attachNode(audioPlayerNode)
-        audioEngine.attachNode(reverbEffect)
-        audioEngine.attachNode(delayEffect)
-        
-        audioEngine.connect(audioPlayerNode, to: delayEffect, format: nil)
-        audioEngine.connect(delayEffect, to: reverbEffect, format: nil)
-        audioEngine.connect(reverbEffect, to: audioEngine.outputNode, format: nil)
-        
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
-        
-        try! audioEngine.start()
-        
-        audioPlayerNode.play()
-    }
-    
-    func playAudioWithEcho(){
-        audioPlayer.stop()
-        audioEngine.stop()
-        audioEngine.reset()
-        
-        let audioPlayerNode = AVAudioPlayerNode()
-        let delayEffect = AVAudioUnitDelay()
-        delayEffect.delayTime = NSTimeInterval( 0.2 )
-        
-        audioEngine.attachNode(audioPlayerNode)
-        audioEngine.attachNode(delayEffect)
-        
-        audioEngine.connect(audioPlayerNode, to: delayEffect, format: nil)
-        audioEngine.connect(delayEffect, to: audioEngine.outputNode, format: nil)
-        
-        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
-        
-        try! audioEngine.start()
-        
-        audioPlayerNode.play()
+        playAudio(1.0, pitch:0.0, echo: 0.1,reverb: 50.0)
     }
     
     @IBAction func playDarthVaderAudio(sender: UIButton) {
-        playAudioWithVariablePitch(-1000)
+        playAudio(1.0, pitch:-1000, echo: 0.0, reverb: 0.0)
     }
     
-    func playSound(rate:Float){
+    func playAudio(rate: Float, pitch:Float, echo:Float, reverb:Float){
+        audioPlayer.stop()
         audioEngine.stop()
         audioEngine.reset()
-        audioPlayer.stop()
-        audioPlayer.rate=rate
-        audioPlayer.currentTime=0.0
-        audioPlayer.play()
         
+        //Declare & Initialize the differents units
+        let audioPlayerNode = AVAudioPlayerNode()
+        let reverbEffect = AVAudioUnitReverb()
+        let varyEffect = AVAudioUnitVarispeed()
+        let delayEffect = AVAudioUnitDelay()
+        let pitchEffect = AVAudioUnitTimePitch()
+        
+        //Adjust parameters
+        varyEffect.rate = rate
+        reverbEffect.wetDryMix = reverb
+        pitchEffect.pitch = pitch
+        delayEffect.delayTime = NSTimeInterval( echo )
+     
+        //Attach all units to the AudioEngine
+        audioEngine.attachNode(audioPlayerNode)
+        audioEngine.attachNode(varyEffect)
+        audioEngine.attachNode(reverbEffect)
+        audioEngine.attachNode(pitchEffect)
+        audioEngine.attachNode(delayEffect)
+        
+        //Connect all the Nodes
+        audioEngine.connect(audioPlayerNode, to: delayEffect, format: nil)
+        audioEngine.connect(delayEffect, to: pitchEffect, format: nil)
+        audioEngine.connect(pitchEffect, to: reverbEffect, format: nil)
+        audioEngine.connect(reverbEffect, to: varyEffect, format: nil)
+        audioEngine.connect(varyEffect, to: audioEngine.outputNode, format: nil)
+        
+        audioPlayerNode.scheduleFile(audioFile, atTime: nil, completionHandler: nil)
+        
+        try! audioEngine.start()
+        
+        audioPlayerNode.play()
     }
     
     
